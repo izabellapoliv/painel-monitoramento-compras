@@ -1,0 +1,15 @@
+services:
+  app:
+    container_name: painel-monitoramento-commerce
+    build:
+      context: ../
+      dockerfile: deployments/app/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      APPLICATION_ENV: development
+      DATABASE_USERNAME: development
+      DATABASE_PASSWORD: development
+      DATABASE_HOST: galaxcommerce.com.br
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
