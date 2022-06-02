@@ -7,7 +7,7 @@ COLOR_YELLOW = \033[33m
 COLOR_GREEN = \033[32m
 COLOR_RED = \033[31m
 
-PROJECT := Simple App
+PROJECT := Painel Monitoramento Commerce
 
 ## Installs a development environment
 install: deploy

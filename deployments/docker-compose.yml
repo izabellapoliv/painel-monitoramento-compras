@@ -6,10 +6,19 @@ services:
       dockerfile: deployments/app/Dockerfile
     ports:
       - "5000:5000"
+    volumes: ['../app:/app']
     environment:
-      APPLICATION_ENV: development
-      DATABASE_USERNAME: development
-      DATABASE_PASSWORD: development
-      DATABASE_HOST: galaxcommerce.com.br
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      DATABASE_NAME: galaxcom_monitoramentos
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: "!_yHMP(.zRr("
+      DATABASE_HOST: database
+  database:
+    container_name: database-monitoramento-commerce
+    image: mysql/mysql-server:latest
+    ports:
+      - "5006:3306"
+    volumes:
+      - ../database/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "!_yHMP(.zRr("
+      MYSQL_ROOT_HOST: "%"
