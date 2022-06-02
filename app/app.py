@@ -1,7 +1,8 @@
 # coding: utf-8
 
+from distutils.log import debug
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
@@ -9,7 +10,6 @@ app = Flask(__name__)
 SQLALCHEMY_DATABASE_URI = f'mysql://{os.environ.get("DATABASE_USERNAME")}:{os.environ.get("DATABASE_PASSWORD")}@{os.environ.get("DATABASE_HOST")}/{os.environ.get("DATABASE_NAME")}'
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 db = SQLAlchemy(app)
-
 
 class Compras(db.Model):
     fk_id_compra = db.Column(db.Integer, primary_key=True)
@@ -35,6 +35,12 @@ class Compras(db.Model):
             "data_compra": self.data_compra,
         }
 
+@app.before_request
+def limit_remote_addr():
+    if app.debug == False:
+        allowed_ips = ['187.111.20.13', '189.113.170.27']
+        if request.remote_addr not in allowed_ips:
+            abort(403)  # Forbidden
 
 @app.route("/")
 def welcome():
