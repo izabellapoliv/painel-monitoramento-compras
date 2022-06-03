@@ -11,6 +11,7 @@ SQLALCHEMY_DATABASE_URI = f'mysql://{os.environ.get("DATABASE_USERNAME")}:{os.en
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 db = SQLAlchemy(app)
 
+
 class Compras(db.Model):
     fk_id_compra = db.Column(db.Integer, primary_key=True)
     fk_id_login = db.Column(db.Integer, primary_key=True)
@@ -35,12 +36,33 @@ class Compras(db.Model):
             "data_compra": self.data_compra,
         }
 
+
 @app.before_request
 def limit_remote_addr():
     if app.debug == False:
-        allowed_ips = ['187.111.20.13', '189.113.170.27']
+        allowed_ips = [
+            "189.113.170.21",
+            "189.113.170.22",
+            "189.113.170.23",
+            "189.113.170.26",
+            "189.113.170.27",
+            "189.113.170.28",
+            "189.113.170.29",
+            "189.113.174.135",
+            "189.113.174.136",
+            "189.113.174.137",
+            "189.113.174.206",
+            "189.113.174.207",
+            "189.113.174.208",
+            "189.113.174.209",
+            "189.113.174.134",
+            "189.113.170.25",
+            "189.113.170.24",
+            "189.113.170.27",
+        ]
         if request.remote_addr not in allowed_ips:
             abort(403)  # Forbidden
+
 
 @app.route("/")
 def welcome():
