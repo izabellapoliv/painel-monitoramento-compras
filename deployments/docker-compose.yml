@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: painel-monitoramento-commerce
+    container_name: painel-monitoramento-compras
     build:
       context: ../
       dockerfile: deployments/app/Dockerfile
@@ -8,17 +8,17 @@ services:
       - "5000:5000"
     volumes: ['../app:/app']
     environment:
-      DATABASE_NAME: galaxcom_monitoramentos
+      DATABASE_NAME: monitoramento_compras
       DATABASE_USERNAME: root
-      DATABASE_PASSWORD: "!_yHMP(.zRr("
+      DATABASE_PASSWORD: "KvJ2TyV2"
       DATABASE_HOST: database
   database:
-    container_name: database-monitoramento-commerce
+    container_name: database-monitoramento-compras
     image: mysql/mysql-server:latest
     ports:
       - "5006:3306"
     volumes:
       - ../database/mysql:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: "!_yHMP(.zRr("
+      MYSQL_ROOT_PASSWORD: "KvJ2TyV2"
       MYSQL_ROOT_HOST: "%"
