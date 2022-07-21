@@ -19,3 +19,10 @@ To view logs, such as error messages, run `make logs`.
 Access http://localhost:5000/api/estoque to start using the API.
 
 Postman is recommended for API testing.
+
+## TODO
+
+- Implement authentication
+- Save inventory to disk
+- Create .sql file with the default database structure
+- Configure Docker environment to create database during install
