@@ -1,5 +1,6 @@
 flask
 Flask
+marshmallow
 python-dotenv
 mysqlclient
 flask-sqlalchemy

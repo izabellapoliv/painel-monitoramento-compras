@@ -7,7 +7,7 @@ COLOR_YELLOW = \033[33m
 COLOR_GREEN = \033[32m
 COLOR_RED = \033[31m
 
-PROJECT := Painel Monitoramento Commerce
+PROJECT := Painel Monitoramento Compras
 
 ## Installs a development environment
 install: deploy
@@ -17,6 +17,13 @@ deploy:
 	docker-compose -f deployments/docker-compose.yml build
 	docker-compose -f deployments/docker-compose.yml down -v
 	docker-compose -f deployments/docker-compose.yml up -d --force-recreate
+
+restart:
+	docker-compose -f deployments/docker-compose.yml down -v
+	docker-compose -f deployments/docker-compose.yml up -d --force-recreate
+
+logs:
+	docker-compose -f deployments/docker-compose.yml logs
 
 ## Prints help message
 help:
