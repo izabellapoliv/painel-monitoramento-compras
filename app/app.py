@@ -4,36 +4,24 @@ import os
 from flask import Flask, render_template, request, jsonify
 from flask_cors import cross_origin
 
-# from flask_sqlalchemy import SQLAlchemy
-# from sqlalchemy.exc import IntegrityError
-
-from model.credit import Credit, CreditSchema
-from model.debit import Debit, DebitSchema
-from model.transaction import TransactionSchema
-from model.transaction_type import TransactionType
+from flask_marshmallow import Marshmallow
+from flask_sqlalchemy import SQLAlchemy
 
 from lib.security import validate_token
 from exceptions.auth_error import AuthError
 
+from repository import users
+
 app = Flask(__name__)
 app.config.from_object('config')
-# SQLALCHEMY_DATABASE_URI = f'mysql://{os.environ.get("DATABASE_USERNAME")}:{os.environ.get("DATABASE_PASSWORD")}@{os.environ.get("DATABASE_HOST")}/{os.environ.get("DATABASE_NAME")}'
-# app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
-# db = SQLAlchemy(app)
-
-
-transactions = [
-  Credit(1, 50),
-  Credit(2, 40),
-  Debit(3, 3),
-  Debit(4, 2)
-]
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 
 @app.before_request
 def get_token_auth_header():
     auth = request.headers.get('Authorization', None)
-    validate_token(auth)
+    # validate_token(auth)
 
 
 @app.route("/")
@@ -41,21 +29,9 @@ def welcome():
     return render_template("index.html")
 
 
-@app.route("/api/estoque", methods=["GET"])
-def get_inventory():
-    schema = TransactionSchema(many=True)
-    return jsonify(schema.dump(transactions))
-
-
-@app.route('/api/estoque', methods=['POST'])
-def change_inventory():
-    schema = CreditSchema() if request.json["type"] == TransactionType.CREDIT else DebitSchema()
-    transaction = schema.load({
-        'id': transactions[-1].id + 1,
-        'amount': request.json["amount"]
-    })
-    transactions.append(schema.dump(transaction))
-    return schema.dump(transaction), 201
+@app.route('/api/usuarios', methods=['POST'])
+def post_user():
+    return users.create()
 
 
 @app.errorhandler(AuthError)
