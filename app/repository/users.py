@@ -1,8 +1,8 @@
 from werkzeug.security import generate_password_hash
 from flask import request, jsonify
 
-from app import db
-from model.user import Users, user_schema, users_schema
+from app.lib.extensions import db
+from app.model.user import Users, user_schema, users_schema
 
 def create():
     login = request.json['login']
@@ -17,3 +17,9 @@ def create():
         return jsonify(result), 201
     except Exception as inst:
         return jsonify({'message': inst.args}), 500
+
+def get_by_login(login) -> Users:
+    try:
+        return Users.query.filter(Users.login == login).one()
+    except:
+        return None

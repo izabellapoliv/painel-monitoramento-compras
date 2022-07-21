@@ -1,7 +1,7 @@
 import datetime
 from abc import ABC
 
-from app import db, ma
+from app.lib.extensions import db, ma
 
 
 class Transactions(db.Model):
@@ -18,7 +18,7 @@ class Transactions(db.Model):
 
 class TransactionsSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'amount', 'type', 'description')
+        fields = ('id', 'amount', 'type', 'description', 'created_at')
 
 
 transaction_schema = TransactionsSchema()

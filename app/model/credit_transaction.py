@@ -3,7 +3,7 @@ from .transaction_type import TransactionType
 
 class Credit(Transactions):
   def __init__(self, amount) -> None:
-    super(Credit, self).__init__(amount, TransactionType.CREDIT)
+    super(Credit, self).__init__(amount, TransactionType.CREDIT.value)
 
   def get_schema(many=False):
     return credit_schema if many else credits_schema
