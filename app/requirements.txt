@@ -2,5 +2,7 @@ flask
 Flask
 marshmallow
 python-dotenv
+PyJWT
+flask-cors
 mysqlclient
 flask-sqlalchemy

@@ -19,6 +19,7 @@ services:
       - "5006:3306"
     volumes:
       - ../database/mysql:/var/lib/mysql
+      - ../database/scripts/schema.sql:/docker-entrypoint-initdb.d/1.sql
     environment:
       MYSQL_ROOT_PASSWORD: "KvJ2TyV2"
       MYSQL_ROOT_HOST: "%"

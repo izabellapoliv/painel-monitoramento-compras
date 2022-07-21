@@ -24,5 +24,3 @@ Postman is recommended for API testing.
 
 - Implement authentication
 - Save inventory to disk
-- Create .sql file with the default database structure
-- Configure Docker environment to create database during install
