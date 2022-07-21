@@ -10,12 +10,13 @@ from flask_sqlalchemy import SQLAlchemy
 from lib.security import validate_token
 from exceptions.auth_error import AuthError
 
-from repository import users
-
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+
+from repository import users
+from repository import transactions
 
 
 @app.before_request
@@ -32,6 +33,16 @@ def welcome():
 @app.route('/api/usuarios', methods=['POST'])
 def post_user():
     return users.create()
+
+
+@app.route('/api/estoque', methods=['POST'])
+def change_inventory():
+    return transactions.create()
+
+
+@app.route("/api/estoque", methods=["GET"])
+def get_inventory():
+    return transactions.search()
 
 
 @app.errorhandler(AuthError)

@@ -14,5 +14,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `login` varchar(45) NOT NULL,
   `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login_UNIQUE` (`login`)
 ) ENGINE=InnoDB;

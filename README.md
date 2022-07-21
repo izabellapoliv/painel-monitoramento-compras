@@ -20,7 +20,7 @@ Access http://localhost:5000/api/estoque to start using the API.
 
 Postman is recommended for API testing.
 
-## TODO
+## TODO next
 
 - Implement authentication
-- Save inventory to disk
+- Validate that user login is not duplicated before sending to DB
