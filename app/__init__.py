@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import os
+from app.lib import security
 from flask import Flask, render_template, request, jsonify
 from flask_cors import cross_origin
 
@@ -19,12 +20,6 @@ def create_app():
     register_extensions(app)
 
 
-    @app.before_request
-    def get_token_auth_header():
-        auth = request.headers.get('Authorization', None)
-        # validate_token(auth)
-
-
     @app.route("/")
     def welcome():
         return render_template("index.html")
@@ -41,12 +36,14 @@ def create_app():
 
 
     @app.route('/api/estoque', methods=['POST'])
-    def change_inventory():
+    @security.token_required
+    def change_inventory(current_user):
         return transactions.create()
 
 
     @app.route("/api/estoque", methods=["GET"])
-    def get_inventory():
+    @security.token_required
+    def get_inventory(current_user):
         return transactions.search()
 
 

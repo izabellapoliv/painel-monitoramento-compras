@@ -1,4 +1,5 @@
 from flask import request, jsonify, current_app as app
+from functools import wraps
 import datetime
 from werkzeug.security import check_password_hash
 import jwt
@@ -14,15 +15,16 @@ def auth():
         raise AuthError({
             'code': 'not_found',
             'description': 'User not found'
-        })
+        }, 401)
 
     exp = datetime.datetime.now() + datetime.timedelta(hours=12)
     token = jwt.encode(payload={
         'login': user.login,
         'exp': exp
-    }, key=app.config['SECRET_KEY'])
+    }, key=app.config['SECRET_KEY'], algorithm='HS256')
 
     return jsonify({
+        'type': 'Bearer',
         'token': token,
         'exp': exp,
     })
@@ -33,3 +35,25 @@ def validate_auth(auth):
             'code': 'authorization_header_missing',
             'description': 'Authorization header is expected'
             }, 401)
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization').replace('Bearer ', '')
+        if not token:
+            raise AuthError({
+                'code': 'auth_token_missing',
+                'description': 'Token is missing from request'
+            }, 401)
+
+        try:
+            data = jwt.decode(token, key=app.config['SECRET_KEY'], algorithms=['HS256'])
+            current_user = get_by_login(data)
+            return f(current_user, *args, **kwargs)
+        except Exception as inst:
+            raise AuthError({
+                'code': 'auth_token_invalid',
+                'description': 'Token is invalid or expired',
+                'debug': inst.args
+            }, 401)
+    return decorated

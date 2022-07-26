@@ -22,5 +22,4 @@ Postman is recommended for API testing.
 
 ## TODO next
 
-- Implement authentication
 - Validate that user login is not duplicated before sending to DB
